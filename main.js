@@ -3,6 +3,7 @@ import React from 'react';
 import store from './src/store'
 import Container from './src/Container'
 import { Provider } from 'react-redux';
+import "./src/assets/styles/index.scss"
 
 render(
     <Provider store={store}>

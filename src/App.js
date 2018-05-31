@@ -1,18 +1,38 @@
 import React from "react";
+import {
+    Route,
+    Switch,
+    Redirect
+} from "react-router-dom";
 import { connect } from 'react-redux';
-import { asyncgetCurrentUser } from './actions/user.asyncaction';
+
+//components
+import Loader from "./components/Loader"
+import {
+    Home
+} from "./view";
 
 class App extends React.Component {
-    componentDidMount(){
-        this.props.dispatch(asyncgetCurrentUser())
+
+    state = {
+        loader: false
     }
+
     render() {
         return (
-            <div>
-                <h2>my App</h2>
-            </div>
+            !this.props.loader ?
+            <Switch>
+                <Route path={`/home`} component={Home} />
+                <Redirect exact from="/" to={`/home`}/>
+                <Route path="*" component={() => <h3>not Found</h3>}/>
+            </Switch>
+            :<Loader/>
         )
     }
 }
 
-export default connect(state => state)(App);
+const mapStateToProps = (reduxState) => ({
+	loader: reduxState.loader.visible,
+});
+
+export default connect(mapStateToProps)(App);

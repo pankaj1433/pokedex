@@ -1,9 +1,11 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
-import {
-    userReducers
-} from './user.reducer'
+//reducers
+import {pokemonList, pokemonListData} from "./pokemonList.reducer";
+import loader from "./loader.reducer"
 
 export const rootReducer  =  combineReducers({
-    userReducers,
+    loader,
+    pokemonList,
+    pokemonListData,
 });

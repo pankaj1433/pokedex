@@ -4,9 +4,9 @@ const middleware = require('webpack-dev-middleware');
 const webpackconfig = require('../webpack.config');
 const webpack = require('webpack');
 
-const conmpiler = webpack(webpackconfig);
+const compiler = webpack(webpackconfig);
 
-app.use(middleware(conmpiler,{
+app.use(middleware(compiler,{
     hot: true,
     publicPath: '/',
     stats: {
@@ -15,7 +15,7 @@ app.use(middleware(conmpiler,{
     historyApiFallback: true
 }));
 
-app.get('/', (req, res)=> {
+app.get('/*', (req, res)=> {
     res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 

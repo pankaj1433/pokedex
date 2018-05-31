@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    font-family: $font-family;
+    background-color: #181817;
+    color: #fafafa;
+}
+
+h1, h2 {
+    font-family: $latobold;
+}
+.loader {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: -webkit-fill-available;
+    img {
+        width: 150px;
+    }
+}
