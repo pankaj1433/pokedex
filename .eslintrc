@@ -1,0 +1,16 @@
+{
+    "extends": "airbnb",
+    "rules": {
+      "indent": ["error", "tab"],
+      "no-tabs": 0,
+      "react/jsx-indent": [2, "tab"],
+      "react/forbid-prop-types": 0,
+      "react/jsx-indent-props": [0, "tab"],
+      "react/prefer-stateless-function": 0
+    },
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true
+    }
+  }

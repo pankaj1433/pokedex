@@ -1,0 +1,9 @@
+import { create } from 'axios';
+
+export const config = {
+	baseURL: 'http://pokeapi.co/api/v2/',
+};
+const axiosInstance = create(config);
+
+export default axiosInstance;
+
