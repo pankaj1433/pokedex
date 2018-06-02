@@ -11,6 +11,17 @@ body {
 h1, h2 {
     font-family: $latobold;
 }
+
+thead {
+    background: #25a2b8;
+    >tr {
+        >th {
+            border: none !important;
+            text-align: center !important;
+        }
+    }
+}
+
 .loader {
     display: flex;
     width: 100%;
@@ -20,4 +31,49 @@ h1, h2 {
     img {
         width: 150px;
     }
+}
+
+.custom-navbar {
+    justify-content: space-between;
+    margin: 0 0 10px;
+}
+
+.modal-header {
+    justify-content: flex-end;
+    color: black;
+    >span {
+        cursor: pointer;
+    }
+}
+
+.pokemon-container {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    align-items: center;
+    >h2 {
+        color: #25a2b8;
+    }
+}
+
+.tabel-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 150px;
+    >span {
+        background-color: #25a2b8;
+        border-radius: 10px;
+        color: #fff;
+        cursor: pointer;
+        padding: 10px;
+    }
+}
+
+.gen-new {
+    background-color: #25a2b8;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    padding: 15px 30px;
 }

@@ -1,5 +1,6 @@
-import Home from "./Home"
-
+import PokemonList from "./PokemonList";
+import Home from "./Home";
 export {
-    Home
+    Home,
+    PokemonList
 };

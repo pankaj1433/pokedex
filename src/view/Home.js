@@ -1,74 +1,87 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import {BootstrapTable, TableHeaderColumn, ClearSearchButton } from "react-bootstrap-table";
+import Modal from "react-modal";
 
 //actions
-import {getPokemonList} from '../actions/pokemonList.action';
+import {getPokemonList, getPokemon} from '../actions/pokemonList.action';
 
-class Home extends Component {
+const customStyles = {
+    content: {
+        width: "50%",
+        padding: "0",
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        overflow: "hidden"
+    },
+    overlay: {
+        position: "fixed",
+        backgroundColor: "rgba(0, 0, 0, 0.6)"
+    }
+};
+
+class Home extends React.Component {
+
+    state = {
+        showRandomPokemon: false
+    }
 
     componentDidMount() {
         if(!this.props.pokemonList.length)
             this.props.getPokemonList();
     }
 
-    imageFormatter = (cell, row) => {
-        console.log('row>>',row)
-        return <img src ={row.sprites.front_shiny} /> ;
+    openPokemon = () => {
+        this.props.getPokemon(Math.floor(Math.random() * 800));
+        this.setState({
+            showRandomPokemon: true
+        })
     }
 
     render() {
-        const options = {
-            page: 1,
-            sizePerPage: 20,
-            pageStartIndex: 1,
-            paginationSize: 3,
-            prePage: "< Prev",
-            nextPage: "Next >",
-            hideSizePerPage: true,
-            alwaysShowAllBtns: true,
-            withFirstAndLast: false,
-            defaultSortName: 'name',
-            defaultSortOrder: 'asc',
-            clearSearch: true,
-        };
-        let { pokemons } = this.props;
-        let displayPagination = (pokemons && pokemons.length > 20);
+        let { randomPokemon } = this.props;
+        let { showRandomPokemon } = this.state;
         return (
-            pokemons.length ?
-                <BootstrapTable
-                    data={pokemons}
-                    width=""
-                    pagination={displayPagination}
-                    search={true}
-                    searchPlaceholder="Search (e.g. by name)"
-                    // ref={(node) => this.driverTable = node}
-                    options={options}>
-                    <TableHeaderColumn isKey={true} dataField="id" dataFormat={this.imageFormatter}>
-                        <span>Avatar</span>
-                    </TableHeaderColumn>
-                    <TableHeaderColumn dataField="name" dataSort={true} >
-                        <span>Name</span>
-                    </TableHeaderColumn>
-                    <TableHeaderColumn dataField="weight" dataSort={true}>
-                        <span>Weight</span>
-                    </TableHeaderColumn>
-                    <TableHeaderColumn dataField="height" dataSort={true}>
-                        <span>Height</span>
-                    </TableHeaderColumn>
-                    
-                </BootstrapTable>
-            :null
+            <React.Fragment>
+                <div class="home-wrapper">
+                    <div onClick={this.openPokemon} class="pokeball">
+                        <div class="pokeball__button"></div>
+                    </div>
+                    <span onClick={this.openPokemon} className="gen-new">Get Random Pokemon</span>
+                </div>
+                <Modal
+                isOpen={showRandomPokemon}
+                style={customStyles}
+                contentLabel="Modal">
+                <div className="modal-container">
+                    <div className = "modal-header">
+                        <span onClick={()=>{ this.setState({showRandomPokemon: false}) } }>close</span>
+                    </div>
+                    {
+                        randomPokemon.data && Object.keys(randomPokemon.data).length && randomPokemon.data.id &&
+                        <div className="pokemon-container">
+                            <img src={randomPokemon.data.sprites.front_shiny} />
+                            <h2>{randomPokemon.data.name}</h2>
+                        </div>
+                    }
+                </div>
+            </Modal>
+            </React.Fragment>
         )
     }
 }
+
 const mapStateToProps = (reduxState) => ({
     pokemonList: reduxState.pokemonList.list,
-    pokemons: reduxState.pokemonListData
+    randomPokemon: reduxState.randomPokemon
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	getPokemonList: () => dispatch(getPokemonList()),
+    getPokemonList: () => dispatch(getPokemonList()),
+    getPokemon:  (id) => dispatch(getPokemon(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

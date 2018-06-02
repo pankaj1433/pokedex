@@ -9,12 +9,11 @@ export const pokemonList = (state=initialState,action) =>{
 
       case POKEMON_ACTION.LIST.STORE :
         return { 
-          ...state, 
+          // ...state, 
           list: action.list,
           next: action.next,
           previous: action.previous
          };
-
       default:
         return state;
     }
@@ -25,6 +24,16 @@ export const pokemonListData = (state=[],action) =>{
   switch(action.type){
     case POKEMON_ACTION.LIST.STORE_DATA :
       return [...state, action.data]
+    default:
+      return state;
+  }
+  return state;
+};
+
+export const randomPokemon = (state={},action) =>{
+  switch(action.type){
+    case POKEMON_ACTION.LIST.RANDOM_POKEMON :
+      return {...state, data: action.data}
     default:
       return state;
   }
