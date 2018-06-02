@@ -14,11 +14,12 @@ app.use(middleware(compiler,{
     },
     historyApiFallback: true
 }));
+// const PORT = process.env.PORT || 3003;
 
 app.get('/*', (req, res)=> {
     res.sendFile(path.resolve(__dirname, '../public/index.html'));
 });
 
-app.listen('3003', (req, res)=>{
+app.listen(process.env.PORT || 3000 , (req, res)=>{
     console.log("App is Up");
 });
