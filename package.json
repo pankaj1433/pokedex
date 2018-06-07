@@ -20,6 +20,7 @@
     "url": "https://github.com/pankaj1433/pokedex/issues"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "bootstrap": "^4.1.1",

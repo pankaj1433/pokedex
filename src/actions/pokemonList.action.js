@@ -1,37 +1,48 @@
 import { API_ROOT, POKEMON_ACTION, API } from '../config/constants';
-import FetchIntercept from './FetchIntercept';
+import {FetchIntercept, FetchMultiplePokemons} from './FetchIntercept';
 import {showLoader, hideLoader} from './loader.action';
 
 export const getPokemonList = (url) => {
-  console.log('url>>',url)
   return (dispatch) => {
     let requestUrl = url ? url: `${API_ROOT}${API.POKEDEX}`
     dispatch(showLoader());
     FetchIntercept(requestUrl)
     .then( res => {
-        if(res.results && res.results.length) {
-          dispatch({ 
-            type: POKEMON_ACTION.LIST.STORE , 
-            list : res.results, 
-            next:res.next,
-            previous: res.previous
-          });
+        if(res && res.status===200) {
+          let {results, next, previous } = res.data;
+          if(results && results.length) {
+            dispatch({ 
+              type: POKEMON_ACTION.LIST.STORE , 
+              list : results, 
+              next: next,
+              previous: previous
+            });
+          }
         }
-        return res;
+        return res.data;
     })
     .then((res) => {
-      // get pokemons data
-      res.results.map((item, index) => {
-        FetchIntercept(item.url).then((res)=>{
-          if( Object.keys(res).length) 
-            dispatch({ type: POKEMON_ACTION.LIST.STORE_DATA , data : res });
-        })
-        .then(() => {
-          if( res.results.length == index+1 ) {
-            dispatch(hideLoader())
-          }
-        });
+      let {results} = res;
+      console.log('res>>>>>>>>',res)
+
+      FetchMultiplePokemons(res.results)
+      .then(response => {
+        dispatch(hideLoader());
+        dispatch({ type: POKEMON_ACTION.LIST.STORE_DATA , data : response });
       });
+      // get pokemons data
+
+      // res.results.map((item, index) => {
+      //   FetchIntercept(item.url).then((res)=>{
+      //     if( Object.keys(res).length) 
+      //       dispatch({ type: POKEMON_ACTION.LIST.STORE_DATA , data : res });
+      //   })
+      //   .then(() => {
+      //     if( res.results.length == index+1 ) {
+      //       dispatch(hideLoader())
+      //     }
+      //   });
+      // });
     })
   };
 }

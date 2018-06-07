@@ -9,7 +9,7 @@ export const pokemonList = (state=initialState,action) =>{
 
       case POKEMON_ACTION.LIST.STORE :
         return { 
-          // ...state, 
+          ...state, 
           list: action.list,
           next: action.next,
           previous: action.previous
@@ -23,7 +23,7 @@ export const pokemonList = (state=initialState,action) =>{
 export const pokemonListData = (state=[],action) =>{
   switch(action.type){
     case POKEMON_ACTION.LIST.STORE_DATA :
-      return [...state, action.data]
+      return [...action.data]
     default:
       return state;
   }

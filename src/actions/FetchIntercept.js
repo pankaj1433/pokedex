@@ -1,29 +1,30 @@
 import { API_ROOT } from '../config/constants';
-
-let handleResponse = response => {
-  if(response.status === 200) {
-      return response.json();
-  }
-  return {};
-}
+import axios from "axios";
 
 let handleCommonError = err => {
   console.log('Common Fetch Error', err);
 };
+  
+export const FetchIntercept = (url) => {
+  return axios.get(url,{
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    }
+  })
+  .catch(handleCommonError)
+}
 
-let xhr =(url) => {
-    return fetch(url,{
+export const FetchMultiplePokemons = urls => {
+  console.log('urls>>>>>',urls);
+  let promises = [];
+  urls.map((pokemon) => {
+    promises.push(axios.get(pokemon.url,{
       headers:{
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       }
-    })
-    .then(handleResponse)
-    .catch(handleCommonError)
-};
-  
-const FetchIntercept = (url) => {
-  return xhr(url);
+    }));
+  })
+  return axios.all(promises)
 }
-
-export default FetchIntercept;
