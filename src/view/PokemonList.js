@@ -7,11 +7,14 @@ import {getPokemonList} from '../actions/pokemonList.action';
 
 class PokemonList extends Component {
 
-    state = {
-        currentPage: 1,
+    constructor() {
+        super();
+        this.state = {
+            currentPage: 1,
+        }
+        this.thisPagePokemons = [];
+        console.log('consturctor');
     }
-
-    thisPagePokemons = [];
 
     componentDidMount() {
         if(!this.props.pokemonList.length)
@@ -19,8 +22,15 @@ class PokemonList extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        console.log('nextProps>>',nextProps);
-        
+        // console.log(this.state);
+        if(nextProps.pokemons.length > this.props.pokemons.length) {
+            let {currentPage} = this.state;
+            nextProps.pokemons.map((pokemon) => {
+                if(pokemon.data.id <= currentPage*10 && pokemon.data.id > (currentPage*10)-10) {
+                    this.thisPagePokemons.push(pokemon.data);
+                }
+            })
+        }
     }
 
     imageFormatter = (cell, row) => {
@@ -28,25 +38,15 @@ class PokemonList extends Component {
     }
 
     loadNext = () => {
-        this.props.getPokemonList(this.props.next);
         this.setState({
             currentPage: this.state.currentPage + 1,
-        })
-    }
-
-    updateList = () => {
-        this.thisPagePokemons = [];
-        let {currentPage} = this.state;
-        this.props.pokemons.map((pokemon, index) => {
-            if(pokemon.id < currentPage*10 && pokemon.id > currentPage-10) {
-                this.thisPagePokemons.push(pokemon.data);
-            }
+        },()=>{
+            this.props.getPokemonList(this.props.next);
         })
     }
 
     render() {
-        this.updateList();
-        console.log('this.thisPagePokemons',this.thisPagePokemons);
+        console.log(this.state,'this.thisPagePokemons',this.thisPagePokemons);
         let { pokemons, next, prev } = this.props;
         let displayPagination = (pokemons && pokemons.length > 20);
         return (

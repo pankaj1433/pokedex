@@ -23,7 +23,7 @@ export const pokemonList = (state=initialState,action) =>{
 export const pokemonListData = (state=[],action) =>{
   switch(action.type){
     case POKEMON_ACTION.LIST.STORE_DATA :
-      return [...action.data]
+      return [...state, ...action.data]
     default:
       return state;
   }

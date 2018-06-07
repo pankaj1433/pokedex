@@ -14,7 +14,7 @@ import { PokemonList, Home } from "./view";
 class App extends React.Component {
 
     state = {
-        loader: false
+        loader: false,
     }
 
     render() {
@@ -27,15 +27,15 @@ class App extends React.Component {
                 <Navigation navigation={navigation}/>
                 <div className="container-fluid">
                 {   
-                    !this.props.loader ?
+                    this.props.loader && <Loader/>
+                }
                     <Switch>
                         <Route path={`/list`} component={PokemonList} />
                         <Route path={`/home`} component={Home} />
                         <Redirect exact from="/" to={`/home`}/>
                         <Route path="*" component={() => <h3>not Found</h3>}/>
                     </Switch>
-                    :<Loader/>
-                }
+                
                 </div>    
             </React.Fragment>
         )
