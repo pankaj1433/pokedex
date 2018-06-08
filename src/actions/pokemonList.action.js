@@ -23,26 +23,11 @@ export const getPokemonList = (url) => {
     })
     .then((res) => {
       let {results} = res;
-      console.log('res>>>>>>>>',res)
-
       FetchMultiplePokemons(res.results)
       .then(response => {
         dispatch(hideLoader());
         dispatch({ type: POKEMON_ACTION.LIST.STORE_DATA , data : response });
       });
-      // get pokemons data
-
-      // res.results.map((item, index) => {
-      //   FetchIntercept(item.url).then((res)=>{
-      //     if( Object.keys(res).length) 
-      //       dispatch({ type: POKEMON_ACTION.LIST.STORE_DATA , data : res });
-      //   })
-      //   .then(() => {
-      //     if( res.results.length == index+1 ) {
-      //       dispatch(hideLoader())
-      //     }
-      //   });
-      // });
     })
   };
 }
@@ -51,9 +36,10 @@ export const getPokemon = (id) => {
   console.log(id,"...")
   return (dispatch) => {
     FetchIntercept(`${API_ROOT}${API.POKEMON}${id}`).then((res)=>{
-      console.log(res);
-      if( Object.keys(res).length) 
-        dispatch({ type: POKEMON_ACTION.LIST.RANDOM_POKEMON , data : res });
+      if(res && res.status===200) {
+        if(res.data && Object.keys(res.data).length) 
+          dispatch({ type: POKEMON_ACTION.LIST.RANDOM_POKEMON , data : res.data });
+      }
     })
   }
 }

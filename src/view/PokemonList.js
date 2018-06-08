@@ -13,24 +13,11 @@ class PokemonList extends Component {
             currentPage: 1,
         }
         this.thisPagePokemons = [];
-        console.log('consturctor');
     }
 
     componentDidMount() {
         if(!this.props.pokemonList.length)
             this.props.getPokemonList();
-    }
-
-    componentWillReceiveProps (nextProps) {
-        // console.log(this.state);
-        if(nextProps.pokemons.length > this.props.pokemons.length) {
-            let {currentPage} = this.state;
-            nextProps.pokemons.map((pokemon) => {
-                if(pokemon.data.id <= currentPage*10 && pokemon.data.id > (currentPage*10)-10) {
-                    this.thisPagePokemons.push(pokemon.data);
-                }
-            })
-        }
     }
 
     imageFormatter = (cell, row) => {
@@ -41,12 +28,31 @@ class PokemonList extends Component {
         this.setState({
             currentPage: this.state.currentPage + 1,
         },()=>{
-            this.props.getPokemonList(this.props.next);
+            //avoid network request if already in redux.
+            if(this.state.currentPage*10 > this.props.pokemons.length) {
+                this.props.getPokemonList(this.props.next);   
+            }
+        });
+    }
+
+    loadPrev = () => {
+        this.setState({
+            currentPage: this.state.currentPage - 1,
+        });
+    }
+
+    updateList = () => {
+        this.thisPagePokemons = [];
+        let {currentPage} = this.state;
+        this.props.pokemons.map((pokemon, index) => {
+            if(pokemon.data.id <= currentPage*10 && pokemon.data.id > (currentPage*10)-10) {
+                this.thisPagePokemons.push(pokemon.data);
+            }
         })
     }
 
     render() {
-        console.log(this.state,'this.thisPagePokemons',this.thisPagePokemons);
+        this.updateList();
         let { pokemons, next, prev } = this.props;
         let displayPagination = (pokemons && pokemons.length > 20);
         return (
