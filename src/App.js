@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 //components
 import Loader from "./components/Loader";
 import Navigation from "./components/Navigation";
-import { PokemonList, Home } from "./view";
+import { PokemonList, Home, Test } from "./view";
 
 class App extends React.Component {
 
@@ -24,14 +24,17 @@ class App extends React.Component {
         ]
         return (
             <React.Fragment>
-                <Navigation navigation={navigation}/>
-                <div className="container-fluid">
+                {/* <Navigation navigation={navigation}/> */}
+                <div 
+                // className="container-fluid"
+                >
                 {   
                     this.props.loader && <Loader/>
                 }
                     <Switch>
                         <Route path={`/list`} component={PokemonList} />
                         <Route path={`/home`} component={Home} />
+                        <Route path={`/test`} component={Test} />
                         <Redirect exact from="/" to={`/home`}/>
                         <Route path="*" component={() => <h3>not Found</h3>}/>
                     </Switch>
